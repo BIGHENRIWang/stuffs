@@ -31,6 +31,8 @@ import matplotlib.pyplot as plt
 #plt.legend()
 #plt.show()
 
+
+
 dat = pd.read_csv("boe.csv", sep=",")
 
 line_x = dat['x']
@@ -45,6 +47,23 @@ plt.title("Original boe curv")
 plt.legend()
 plt.show()
 
+
+
+
+
+
 K = 5.6 
 k_line_x = K * line_x 
-k_line_y = 
+k_line_y = K * line_y
+
+plt.figure(figsize=(9,5))
+plt.plot(k_line_x, k_line_y, label="$k_boe crv$", color="green", linewidth=2.5)
+plt.scatter(k_line_x, k_line_y, marker='x', color='blue', alpha=0.7, label='pnts on crv')
+
+plt.scatter(3.1,0,label="origin", color="red", marker="x")
+
+plt.xlabel("xposition")
+plt.ylabel("yposition")
+plt.title("k- boe curv")
+plt.legend()
+plt.show()
