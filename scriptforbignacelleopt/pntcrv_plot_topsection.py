@@ -90,52 +90,111 @@ k_line_x = k_line_x + translation_x
 k_line_y = k_line_y + translation_y
 
 
-
-#calculate intial angle phi for each position
-delta_y = k_line_y - By
-delta_x = k_line_x - Bx
-delta_dist = np.sqrt(delta_x * delta_x + delta_y * delta_y)
-# phi = np.arctan(np.nan_to_num(delta_y / delta_x))
-phi = np.arctan(delta_y / delta_x)
-
-print(phi.size)
-print(phi.iloc[0])
-
-print(phi.iloc[-1])
+original_k_line_x = k_line_x
+original_k_line_y = k_line_y
 
 
-print('distance between b and 0')
-print(Bx-k_line_x.iloc[0])
-print(By-k_line_y.iloc[0])
+
+
 
 
 #here you input the desired angle changement
-theta = math.pi/200 + math.pi
-# theta is a positive value
+pnt_num = k_line_x.size
 
+def cal_dist(x1,y1,x2,y2):
+    delta_x = x1 - x2
+    delta_y = y1-y2
+    delta_dist = np.sqrt(delta_x * delta_x + delta_y * delta_y)
+    return delta_dist
+
+
+
+shortest_dist = 10
+shortest_dist_index = 0
+shortest_dist_x = 0
+shortest_dist_y = 0
+shortest_dist_i =10
+
+for i in range(200,250,1):
+
+    # calculate intial angle phi for each position
+    delta_y = k_line_y - By
+    delta_x = k_line_x - Bx
+    delta_dist = np.sqrt(delta_x * delta_x + delta_y * delta_y)
+    phi = np.arctan(delta_y / delta_x)
+
+    theta = math.pi/i + math.pi
+
+    phi_new = phi - theta
+    new_k_line_x = Bx + abs(delta_x) * np.cos(phi_new)
+    new_k_line_y = By + abs(delta_x) * np.sin(phi_new)
+
+
+    for index in range(pnt_num):
+        dist = cal_dist(new_k_line_x[index], new_k_line_y[index], Ax, Ay)
+        if dist < shortest_dist:
+            shortest_dist = dist
+            shortest_dist_index = index
+            shortest_dist_x = new_k_line_x[index]
+            shortest_dist_y = new_k_line_y[index]
+            shortest_dist_i = i
+    else:
+        print('maybe there is something wrong in this theta angle!')
+
+print("shortest distance, etc.:")
+print(shortest_dist)
+print(shortest_dist_x)
+print(shortest_dist_y)
+print(shortest_dist_i)
+print(shortest_dist_index)
+
+delta_y = k_line_y - By
+delta_x = k_line_x - Bx
+phi = np.arctan(delta_y / delta_x)
+theta = math.pi / shortest_dist_i + math.pi
 phi_new = phi - theta
-k_line_x = Bx + abs(delta_x) * np.cos(phi_new)
-k_line_y = By + abs(delta_x) * np.sin(phi_new)
+new_k_line_x = Bx + abs(delta_x) * np.cos(phi_new)
+new_k_line_y = By + abs(delta_x) * np.sin(phi_new)
+#
+# new_crv = pd.concat(new_k_line_x, new_k_line_y)
+# new_crv.to_csv("result.csv")
+#
 
 
-
-
-
-
-
-
-
+# print(result_df)
 
 #plot k'ed airfoil boe
-plt.plot(k_line_x, k_line_y, label="$k_boe crv$", color="green", linewidth=2.5)
-plt.scatter(k_line_x, k_line_y, marker='x', color='blue', alpha=0.7, label='pnts on crv')
-
-
+plt.scatter(original_k_line_x, original_k_line_y, marker='x', color='green', alpha=0.7, label='original airfoil curve')
+plt.scatter(new_k_line_x, new_k_line_y, marker='x', color='blue', alpha=0.7, label='rotated airfoil curve')
+plt.scatter(shortest_dist_x, shortest_dist_y, marker='>', color='red', alpha=0.7, label='the nearest pnt')
 
 plt.xlabel("xposition")
 plt.ylabel("yposition")
 plt.title("crvs and pnts")
 plt.legend()
-plt.show()
+# plt.show()
+plt.savefig("the picture.pdf")
 
+result_df = pd.concat([new_k_line_x, new_k_line_y], axis =1)
+print(result_df.info)
+result_df.to_csv("newfoilcrv_posn_complete.csv", sep=" ", header=True)
+
+
+
+new_k_line_x = new_k_line_x.iloc[0:shortest_dist_index]
+new_k_line_y = new_k_line_y.iloc[0:shortest_dist_index]
+new_k_line_x.iloc[-1] = shortest_dist_x
+new_k_line_y.iloc[-1] = shortest_dist_y
+print(new_k_line_x.size)
+print(new_k_line_y.size)
+result_df = pd.concat([new_k_line_x, new_k_line_y], axis =1)
+print(result_df.info)
+result_df.to_csv("newfoilcrv_posn_medium.csv", sep=" ", header=True)
+
+
+new_k_line_x.iloc[-1] = Ax
+new_k_line_y.iloc[-1] = Ay
+result_df = pd.concat([new_k_line_x, new_k_line_y], axis =1)
+print(result_df.info)
+result_df.to_csv("newfoilcrv_posn_last.csv", sep=" ", header=True)
 
