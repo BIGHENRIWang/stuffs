@@ -91,8 +91,8 @@ shortest_dist_x = 0
 shortest_dist_y = 0
 shortest_dist_i =10
 
-for i in range(-1100,-1):
-    i = i / 1000
+for i in range(497700,497800):
+    i = i / 100
     # calculate intial angle phi for each position
     delta_y = k_line_y - By
     delta_x = k_line_x - Bx
@@ -129,8 +129,14 @@ delta_x = k_line_x - Bx
 phi = np.arctan(delta_y / delta_x)
 theta = math.pi / shortest_dist_i + math.pi
 phi_new = phi - theta
-new_k_line_x = Bx + abs(delta_x) * np.cos(phi_new)
-new_k_line_y = By + abs(delta_x) * np.sin(phi_new)
+# new_k_line_x = Bx + abs(delta_x) * np.cos(phi_new)
+# new_k_line_y = By + abs(delta_x) * np.sin(phi_new)
+new_k_line_x[0] = Bx
+new_k_line_y[0] = By
+new_k_line_x[1:-1] = Bx + abs(delta_x[1:-1]) * np.cos(phi_new[1:-1])
+new_k_line_y[1:-1] = By + abs(delta_x[1:-1]) * np.sin(phi_new[1:-1])
+print(new_k_line_x[0])
+print(new_k_line_y[0])
 
 #plot k'ed airfoil boe
 plt.scatter(original_k_line_x, original_k_line_y, marker='x', color='green', alpha=0.7, label='original airfoil curve')
@@ -149,32 +155,46 @@ result_df = pd.concat([new_k_line_x, new_k_line_y], axis =1)
 # result_df.to_csv("newfoilcrv_posn_complete.csv", sep=" ", header=True)
 
 
-
 new_k_line_x = new_k_line_x.iloc[0:shortest_dist_index]
 new_k_line_y = new_k_line_y.iloc[0:shortest_dist_index]
+
 new_k_line_x.iloc[-1] = shortest_dist_x
 new_k_line_y.iloc[-1] = shortest_dist_y
 # print(new_k_line_x.size)
 # print(new_k_line_y.size)
 result_df = pd.concat([new_k_line_x, new_k_line_y], axis =1)
 logger.debug(result_df.info)
-# result_df.to_csv("newfoilcrv_posn_medium.csv", sep=" ", header=True)
-
 
 new_k_line_x.iloc[-1] = Ax
 new_k_line_y.iloc[-1] = Ay
+
+
 result_df = pd.concat([new_k_line_x, new_k_line_y], axis =1)
 logger.debug(result_df.info)
-# result_df.to_csv("newfoilcrv_posn_last.csv", sep=" ", header=True)
 
 z_size = new_k_line_x.size
 z_step = Bz - Az
 z_step = z_step / (z_size - 1 )
-new_k_line_z = new_k_line_x
+
+new_k_line_z = []
 
 for index in range(z_size):
-    new_k_line_z.iloc[index] = Bz - z_step * index
+    new_k_line_z.append( Bz - z_step * index)
+
+print(new_k_line_z[0])
+print(new_k_line_z[-1])
+new_k_line_z = pd.Series(new_k_line_z, index=None)
+
+
+print(new_k_line_x.size)
+print(new_k_line_y.size)
+print(new_k_line_z.size)
+
+print(new_k_line_x[0])
+print(new_k_line_y[0])
+print(new_k_line_z[0])
+
 
 result_df = pd.concat([new_k_line_x, new_k_line_y, new_k_line_z], axis =1)
 logger.debug(result_df.info)
-result_df.to_csv("newfoilcrv_posn_last_withz.csv", sep=" ", header=True)
+result_df.to_csv("newfoilcrv_posn_last_withz.csv", sep=" ", header=True, index=False )
