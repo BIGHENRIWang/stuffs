@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 logger.info('assign the original good to-be-sub airfoil data, prepare it with columns separated by nothing but comma')
-dat = pd.read_csv("cast.csv", sep=",")
+dat = pd.read_csv("syj.csv", sep=",")
 
 line_x = dat['x']
 line_y = dat['y']
@@ -93,8 +93,8 @@ shortest_dist_x = 0
 shortest_dist_y = 0
 shortest_dist_i =10
 
-for i in range(244000,246000):
-    i = i / 1000
+for i in range(497700,497900):
+    i = i / 100
     # calculate intial angle phi for each position
     delta_y = k_line_y - By
     delta_x = k_line_x - Bx
