@@ -26,24 +26,35 @@ line_z = dat['z']
 #adaption to local section...
 
 #exact local length
-K = 5.524
-#exaggerated y expansion ratio
-Ky =5.8
+K = 5.6495224
 
-#local A point coordination
-Ax = 1.904129
-Ay = 1.427906
-Az = -0.03304653
+Ax = 1.798490
+Ay = 1.28520
+Az = 0.0
 
-#local B point coordination
-Bx = 7.366
-By = 1.439885
-Bz = -0.03332581
+Bx = 7.366000
+By = 1.440269000000
+Bz = 0.0
 
-#local C point coordination
-Cx = 1.841189
-Cy = 1.535586
-Cz = -0.03554083
+Cx = 1.716405
+Cy = 1.390650000000
+Cz = 0.0
+
+#
+# #local A point coordination
+# Ax = 1.904129
+# Ay = 1.427906
+# Az = -0.03304653
+#
+# #local B point coordination
+# Bx = 7.366
+# By = 1.439885
+# Bz = -0.03332581
+#
+# #local C point coordination
+# Cx = 1.841189
+# Cy = 1.535586
+# Cz = -0.03554083
 
 
 k_line_x = K * line_x
@@ -86,15 +97,14 @@ def cal_dist(x1,y1,x2,y2):
     return delta_dist
 
 
-
 shortest_dist = 10
 shortest_dist_index = 0
 shortest_dist_x = 0
 shortest_dist_y = 0
 shortest_dist_i =10
 
-for i in range(497700,497900):
-    i = i / 100
+for i in range(-1335000,-1333000):
+    i = i / 10000
     # calculate intial angle phi for each position
     delta_y = k_line_y - By
     delta_x = k_line_x - Bx
@@ -106,11 +116,9 @@ for i in range(497700,497900):
     else:
         theta = math.pi
 
-
     phi_new = phi - theta
-    new_k_line_x = Bx + abs(delta_x) * np.cos(phi_new)
-    new_k_line_y = By + abs(delta_x) * np.sin(phi_new)
-
+    new_k_line_x = Bx + abs(delta_dist) * np.cos(phi_new)
+    new_k_line_y = By + abs(delta_dist) * np.sin(phi_new)
 
     for index in range(pnt_num):
         dist = cal_dist(new_k_line_x[index], new_k_line_y[index], Ax, Ay)
@@ -135,8 +143,8 @@ phi_new = phi - theta
 # new_k_line_y = By + abs(delta_x) * np.sin(phi_new)
 new_k_line_x[0] = Bx
 new_k_line_y[0] = By
-new_k_line_x[1:-1] = Bx + abs(delta_x[1:-1]) * np.cos(phi_new[1:-1])
-new_k_line_y[1:-1] = By + abs(delta_x[1:-1]) * np.sin(phi_new[1:-1])
+new_k_line_x[1:-1] = Bx + abs(delta_dist[1:-1]) * np.cos(phi_new[1:-1])
+new_k_line_y[1:-1] = By + abs(delta_dist[1:-1]) * np.sin(phi_new[1:-1])
 print(new_k_line_x[0])
 print(new_k_line_y[0])
 
@@ -197,6 +205,6 @@ print(new_k_line_y[0])
 print(new_k_line_z[0])
 
 
-result_df = pd.concat([new_k_line_x, new_k_line_y, new_k_line_z], axis =1)
+result_df = pd.concat([new_k_line_x, new_k_line_z, new_k_line_y], axis =1)
 logger.debug(result_df.info)
 result_df.to_csv("newfoilcrv_posn_last_withz.csv", sep=" ", header=True, index=False )
