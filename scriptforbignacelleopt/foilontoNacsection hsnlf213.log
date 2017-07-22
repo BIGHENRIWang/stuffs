@@ -1,0 +1,11 @@
+07-22 10:37 __main__     INFO     assign the original good to-be-sub airfoil data, prepare it with columns separated by nothing but comma
+07-22 10:37 __main__     INFO     K
+07-22 10:37 __main__     INFO     5.6695224
+07-22 10:37 __main__     INFO     move to the B point
+07-22 10:37 __main__     INFO     shortest distance:0.014004239497771373
+07-22 10:37 __main__     INFO     shortest distance: the nearest point to B (x,y):1.812488858266848,1.2855881895614791
+07-22 10:37 __main__     INFO     shortest distance: rotating angle: pi / -270.4
+07-22 10:37 __main__     INFO     shortest distance: index of the nearest point to B: 69
+07-22 10:37 __main__     INFO     highestpnt_ori_y - new_k_line_y.max() = 
+07-22 10:37 __main__     INFO     1.84952523934
+07-22 10:37 __main__     INFO     4.87606552975e-05

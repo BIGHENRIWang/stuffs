@@ -14,7 +14,6 @@ logging.basicConfig(level=logging.INFO,
 logger = logging.getLogger(__name__)
 
 
-
 logger.info('assign the original good to-be-sub airfoil data, prepare it with columns separated by nothing but comma')
 dat = pd.read_csv("syj.csv", sep=",")
 
@@ -26,7 +25,12 @@ line_z = dat['z']
 #adaption to local section...
 
 #exact local length
-K = 5.6495224
+
+highestpnt_ori_x = 4.053893
+highestpnt_ori_y = 1.849574
+highestpnt_ori_z = 0.0
+
+
 
 Ax = 1.798490
 Ay = 1.28520
@@ -40,6 +44,13 @@ Cx = 1.716405
 Cy = 1.390650000000
 Cz = 0.0
 
+#the expansion rationbased on length recovery
+# K = 5.6495224
+
+# minor adjustment to the above k
+K = 5.7395224
+logger.info("K")
+logger.info(K)
 #
 # #local A point coordination
 # Ax = 1.904129
@@ -103,8 +114,8 @@ shortest_dist_x = 0
 shortest_dist_y = 0
 shortest_dist_i =10
 
-for i in range(-1335000,-1333000):
-    i = i / 10000
+for i in range(-18000,-17000):
+    i = i / 100
     # calculate intial angle phi for each position
     delta_y = k_line_y - By
     delta_x = k_line_x - Bx
@@ -148,6 +159,9 @@ new_k_line_y[1:-1] = By + abs(delta_dist[1:-1]) * np.sin(phi_new[1:-1])
 print(new_k_line_x[0])
 print(new_k_line_y[0])
 
+logger.info("highestpnt_ori_y - new_k_line_y.max() = ")
+logger.info(new_k_line_y.max())
+logger.info(highestpnt_ori_y - new_k_line_y.max())
 #plot k'ed airfoil boe
 plt.scatter(original_k_line_x, original_k_line_y, marker='x', color='green', alpha=0.7, label='original airfoil curve')
 plt.scatter(new_k_line_x, new_k_line_y, marker='x', color='blue', alpha=0.7, label='rotated airfoil curve')
@@ -157,6 +171,8 @@ plt.xlabel("xposition")
 plt.ylabel("yposition")
 plt.title("crvs and pnts")
 plt.legend()
+ax = plt.gca()
+ax.set_aspect(1)
 # plt.show()
 plt.savefig("the picture.pdf")
 
