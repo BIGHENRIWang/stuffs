@@ -1,0 +1,6 @@
+08-07 12:23 __main__     INFO     assign the original good substituting airfoil data, prepare it with columns separated by nothing but comma
+08-07 12:23 __main__     INFO     move to the B point
+08-07 12:23 __main__     INFO     shortest distance:0.002355513671252151
+08-07 12:23 __main__     INFO     shortest distance: the nearest point to B (x,y):2.0388759553178684,-1.5397157282274
+08-07 12:23 __main__     INFO     shortest distance: rotating angle: pi / -101.0
+08-07 12:23 __main__     INFO     shortest distance: index of the nearest point to B: 77

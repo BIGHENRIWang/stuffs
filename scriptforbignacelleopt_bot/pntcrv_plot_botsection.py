@@ -9,72 +9,26 @@ import math
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                     datefmt='%m-%d %H:%M',
-                    filename='foilontoNacsection.log',
+                    filename='foilontoNacBotsection.log',
                     filemode='w')
 logger = logging.getLogger(__name__)
 
 
-logger.info('assign the original good to-be-sub airfoil data, prepare it with columns separated by nothing but comma')
-dat = pd.read_csv("nlf0115.csv", sep=",")
+logger.info('assign the original good substituting airfoil data, prepare it with columns separated by nothing but comma')
+dat = pd.read_csv("NO2.csv", sep=",")
 
 line_x = dat['x']
 line_y = dat['y']
-line_z = dat['z']
+line_y = -1.0 * line_y
 
 
-#adaption to local section...
-
-#exact local length
-
-highestpnt_ori_x = 4.053893
-highestpnt_ori_y = 1.849574
-highestpnt_ori_z = 0.0
-
-
-Ax = 1.798490
-Ay = 1.28520
+Ax = 2.036636
+Ay = -1.538987
 Az = 0.0
 
-Bx = 7.366000
-By = 1.440269000000
+Bx = 7.366
+By = -1.440269
 Bz = 0.0
-
-Cx = 1.716405
-Cy = 1.390650000000
-Cz = 0.0
-
-#the expansion rationbased on length recovery
-# K = 5.6495224
-
-# minor adjustment to the above k
-K = 5.6095224
-logger.info("K")
-logger.info(K)
-#
-# #local A point coordination
-# Ax = 1.904129
-# Ay = 1.427906
-# Az = -0.03304653
-#
-# #local B point coordination
-# Bx = 7.366
-# By = 1.439885
-# Bz = -0.03332581
-#
-# #local C point coordination
-# Cx = 1.841189
-# Cy = 1.535586
-# Cz = -0.03554083
-
-
-k_line_x = K * line_x
-k_line_y = K * line_y
-k_line_z = K * line_z
-
-
-plt.figure(figsize=(9,5))
-ax = plt.gca()
-# ax.set_aspect('equal')
 
 #plot A point
 plt.scatter(Ax,Ay,label="A point", color="red", marker="p")
@@ -82,10 +36,18 @@ plt.scatter(Ax,Ay,label="A point", color="red", marker="p")
 #plot B point
 plt.scatter(Bx,By,label="B point", color="blue", marker="p")
 
-#plot C point
-plt.scatter(Cx,Cy,label="C point", color="black", marker="p")
+#the expansion rationbased on length recovery
+
+K = 5.43
+k_line_x = K * line_x
+k_line_y = K * line_y
+
+plt.figure(figsize=(9,5))
+ax = plt.gca()
+# ax.set_aspect('equal')
 
 
+# move to the B point...
 logger.info("move to the B point")
 translation_x = Bx - k_line_x.iloc[0]
 translation_y = By - k_line_y.iloc[0]
@@ -97,7 +59,6 @@ k_line_y = k_line_y + translation_y
 original_k_line_x = k_line_x
 original_k_line_y = k_line_y
 
-#here you input the desired angle changement
 pnt_num = k_line_x.size
 
 def cal_dist(x1,y1,x2,y2):
@@ -113,8 +74,10 @@ shortest_dist_x = 0
 shortest_dist_y = 0
 shortest_dist_i =10
 
-for i in range(-1800,-70):
-    i = i / 1
+#here you input the desired angle changement
+
+for i in range(-8400,-8200):
+    i = i / 100
     # calculate intial angle phi for each position
     delta_y = k_line_y - By
     delta_x = k_line_x - Bx
@@ -158,9 +121,6 @@ new_k_line_y[1:-1] = By + abs(delta_dist[1:-1]) * np.sin(phi_new[1:-1])
 print(new_k_line_x[0])
 print(new_k_line_y[0])
 
-logger.info("highestpnt_ori_y - new_k_line_y.max() = ")
-logger.info(new_k_line_y.max())
-logger.info(highestpnt_ori_y - new_k_line_y.max())
 #plot k'ed airfoil boe
 plt.scatter(original_k_line_x, original_k_line_y, marker='x', color='green', alpha=0.7, label='original airfoil curve')
 plt.scatter(new_k_line_x, new_k_line_y, marker='x', color='blue', alpha=0.7, label='rotated airfoil curve')
@@ -222,4 +182,4 @@ print(new_k_line_z[0])
 
 result_df = pd.concat([new_k_line_x, new_k_line_z, new_k_line_y], axis =1)
 logger.debug(result_df.info)
-result_df.to_csv("newfoilcrv_posn_last_withz.csv", sep=" ", header=True, index=False )
+result_df.to_csv("newfoilcrv_posn_last_withz_bot.csv", sep=" ", header=True, index=False )
