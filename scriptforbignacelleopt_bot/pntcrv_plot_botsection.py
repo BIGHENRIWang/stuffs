@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 logger.info('assign the original good substituting airfoil data, prepare it with columns separated by nothing but comma')
-dat = pd.read_csv("NO75.csv", sep=",")
+dat = pd.read_csv("S73613.csv", sep=",")
 
 line_x = dat['x']
 line_y = dat['y']
@@ -39,7 +39,7 @@ plt.scatter(Bx,By,label="B point", color="blue", marker="p")
 
 #the expansion rationbased on length recovery
 
-K = 5.39
+K = 5.38
 k_line_x = K * line_x
 k_line_y = K * line_y
 
@@ -77,7 +77,7 @@ shortest_dist_i =10
 
 #here you input the desired angle changement
 
-for i in range(-12300,-12100):
+for i in range(-12200,-12000):
     i = i / 100
     # calculate intial angle phi for each position
     delta_y = k_line_y - By
