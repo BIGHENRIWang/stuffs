@@ -85,8 +85,8 @@ shortest_dist_x = 0
 shortest_dist_y = 0
 shortest_dist_i =10
 
-for i in range(-180,-30):
-    i = i / 1
+for i in range(-800,-600):
+    i = i / 100
     # calculate intial angle phi for each position
     delta_y = k_line_y - By
     delta_x = k_line_x - Bx
