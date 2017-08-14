@@ -1,8 +1,8 @@
-08-14 22:14 __main__     INFO     assign the original good to-be-sub airfoil data, prepare it with columns separated by nothing but comma
-08-14 22:14 __main__     INFO     K
-08-14 22:14 __main__     INFO     1.1932417
-08-14 22:14 __main__     INFO     move to the B point
-08-14 22:14 __main__     INFO     shortest distance:0.0014988177605343074
-08-14 22:14 __main__     INFO     shortest distance: the nearest point to B (x,y):1.7972838937877038,1.2843101896359594
-08-14 22:14 __main__     INFO     shortest distance: rotating angle: pi / -7.62
-08-14 22:14 __main__     INFO     shortest distance: index of the nearest point to B: 84
+08-14 22:48 __main__     INFO     assign the original good to-be-sub airfoil data, prepare it with columns separated by nothing but comma
+08-14 22:48 __main__     INFO     K
+08-14 22:48 __main__     INFO     1.1943
+08-14 22:48 __main__     INFO     move to the B point
+08-14 22:48 __main__     INFO     shortest distance:9.701887605152701e-05
+08-14 22:48 __main__     INFO     shortest distance: the nearest point to B (x,y):1.716441727323121,1.3905602015253655
+08-14 22:48 __main__     INFO     shortest distance: rotating angle: pi / -9.87
+08-14 22:48 __main__     INFO     shortest distance: index of the nearest point to B: 66

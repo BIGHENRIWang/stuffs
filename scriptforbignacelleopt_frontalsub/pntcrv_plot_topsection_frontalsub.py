@@ -26,8 +26,8 @@ line_z = dat['z']
 
 #exact local length
 
-Ax = 1.798490
-Ay = 1.28520
+Ax = 1.716405
+Ay = 1.390650
 Az = 0.0
 
 Bx = 2.849755
@@ -37,7 +37,7 @@ Bz = 0.0
 
 #the expansion rationbased on length recovery
 
-K = 1.1932417
+K = 1.1943
 logger.info("K")
 logger.info(K)
 
@@ -85,7 +85,7 @@ shortest_dist_x = 0
 shortest_dist_y = 0
 shortest_dist_i =10
 
-for i in range(-770,-750):
+for i in range(-1100,-900):
     i = i / 100
     # calculate intial angle phi for each position
     delta_y = k_line_y - By
